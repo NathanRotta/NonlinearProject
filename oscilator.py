@@ -17,15 +17,15 @@ omega = 2.25
 alpha = 1.7
 beta = 0.001
 T = 2*np.pi/omega
-k=0.17
+k=0.5
 def oscilator(t,state,control=0):
-    x,y = state
-    N_num = (y**alpha)*np.exp(alpha*(1-y))+beta*(np.exp(y)-1)
-    N_den = 1+beta*(np.exp(1)-1)
-    N=N_num/N_den
-    xdot = -y+c
-    ydot = x - b*N - d*y + a*np.sin(omega*t)+control
-    return np.array([xdot,ydot])
+	x,y = state
+	N_num = (y**alpha)*np.exp(alpha*(1-y))+beta*(np.exp(y)-1)
+	N_den = 1+beta*(np.exp(1)-1)
+	N=N_num/N_den
+	xdot = -y+c
+	ydot = x - b*N - d*y + a*np.sin(omega*t)+control
+	return np.array([xdot,ydot])
 
 def cont_oscilator(t,state):
 	x,y,xp,yp = state
@@ -46,11 +46,17 @@ def sim_cont_oscilator(t,y0,period):
 
 	for i in range(1,len(t)):
 		if i>perInd:
-			y[i,:], = rkt.runge4Step(t[i-1],np.concatenate((y[i-1,:],y[i-1-perInd,:])),cont_oscilator,diff)
+			yn = rkt.runge4Step(t[i-1],np.concatenate((y[i-1,:],y[i-1-perInd,:])),cont_oscilator,diff)
 		else:
-			y[i,:], = rkt.runge4Step(t[i-1],np.concatenate((y[i-1,:],y[i-1,:],[k]),axis=None),cont_oscilator,diff)
-
+			yn = rkt.runge4Step(t[i-1],np.concatenate((y[i-1,:],y[i-1,:],[k]),axis=None),cont_oscilator,diff)
+		y[i,0]=yn[0]
+		y[i,1]=yn[1]
 	return y
+def power_spectrum_db(y,sample_T,length)
+	ynoDC = y-y.mean()
+	f,Pxx = np.fft.rfftfreq(length,T0*sample_T) ,np.abs(np.fft.rfft(ynoDC))**2
+	Pxx_db = 10*np.log10(Pxx)
+	return Pxx_db,f
 
 
 # state0 = np.array([0,0])
