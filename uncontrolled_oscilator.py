@@ -4,7 +4,6 @@ from oscilator import *
 from scipy.fft import fft,fftfreq
 sample_T = 0.001
 simulation_T = 120
-T0 = (Cap*Lind)**0.5
 fex=3.8
 def main():
 	state0 = np.array([0,0])
