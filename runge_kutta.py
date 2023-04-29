@@ -7,8 +7,6 @@ import matplotlib.pyplot as plt
 #h step length
 def runge4Step(t,y,fun,h):
 	k1 = fun(t,y)
-#	print(k1)
-#	print(y)
 	k2 = fun(t+h/2,y+h*k1/2)
 	k3 = fun(t+h/2,y+h*k2/2)
 	k4 = fun(t+h,y+h*k3)

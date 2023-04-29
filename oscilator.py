@@ -18,7 +18,7 @@ alpha = 1.7
 beta = 0.001
 T = 2*np.pi/omega
 T0 = (Cap*Lind)**0.5
-k=0.5
+k=0.50
 A = 1.2
 def oscilator(t,state,control=0):
 	x,y = state
@@ -63,6 +63,8 @@ def power_spectrum_db(y,sample_T,length):
 	return Pxx_db,f
 
 
+def val_to_index(arr,val):
+    return [np.argmin(np.abs(arr-i)) for i in val] 
 # state0 = np.array([0,0])
 # t = np.arange(0,120,0.001)
 # states = rkt.runge4Ivp(t,state0,oscilator)
